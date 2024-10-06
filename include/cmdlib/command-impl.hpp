@@ -4,7 +4,7 @@
 #    include <cmdlib/unix/command-impl.hpp>
 #endif
 // command_tech is the class that gives following functions:
-// void spawn(const vector<std::string>&)
+// void start(const vector<std::string>&)
 // std::ostream& in()
 // void close_in()
 // std::istream& out()
