@@ -28,19 +28,9 @@ std::vector<std::string> command::get_arguments() const
     return arguments_;
 }
 
-std::string command::get_directory() const
-{
-    return directory_;
-}
-
-void command::set_directory(const std::string& dir)
-{
-    directory_ = dir;
-}
-
 void command::start()
 {
-    impl_.start(arguments_, directory_);
+    impl_.start(arguments_, directory);
 }
 
 void command::wait()

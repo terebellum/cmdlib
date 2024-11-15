@@ -16,7 +16,7 @@ int main(int, char*[])
 
     // You could choose directory of execution if you want
     cmdlib::command cmd("ls");
-    cmd.set_directory("dir");
+    cmd.directory = "dir";
     std::cout << cmd.output();
 
     // stdin/stdout/stderr streams also supported

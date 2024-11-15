@@ -15,7 +15,7 @@ TEST(CommandTest, Cat)
 TEST(CommandTest, CatDifferentDirectory)
 {
     cmdlib::command cmd("cat", "HelloWorld.txt");
-    cmd.set_directory("test_data");
+    cmd.directory = "test_data";
     EXPECT_EQ(cmd.output(), "Hello world!\n");
 }
 
@@ -25,7 +25,7 @@ TEST(CommandTest, PropertiesCorrectlySet)
     cmdlib::command cmd(expected);
     EXPECT_EQ(cmd.get_arguments(), expected);
     EXPECT_EQ(cmd.get_path(), expected[0]);
-    EXPECT_EQ(cmd.get_directory(), "");
+    EXPECT_EQ(cmd.directory, "");
 }
 
 TEST(CommandTest, Stdin)

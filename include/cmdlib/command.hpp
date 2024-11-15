@@ -16,18 +16,16 @@ CMDLIB_EXPORT class command {
 
     std::string path_;
     std::vector<std::string> arguments_;
-    std::string directory_;
 
 public:
+    std::string directory;
+
     command(const std::vector<std::string>& arguments);
     command(const std::convertible_to<std::string> auto&... args): command(std::vector<std::string>{args...}) { }
     command(std::initializer_list<std::string> arguments);
 
     std::string get_path() const;
     std::vector<std::string> get_arguments() const;
-
-    std::string get_directory() const;
-    void set_directory(const std::string& directory);
 
     void start();
     void wait();
