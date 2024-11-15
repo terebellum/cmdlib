@@ -1,11 +1,10 @@
 #ifndef CMDLIB_COMMAND_
 #define CMDLIB_COMMAND_
 
-#include "cmdlib/unix/command-impl.hpp"
 #include <initializer_list>
 #include <string>
 
-#include <cmdlib/command-impl.hpp>
+#include <cmdlib/command_impl.hpp>
 #include <cmdlib/export.hpp>
 #include <concepts>
 #include <vector>

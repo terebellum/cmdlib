@@ -60,8 +60,8 @@ generate_export_header(cmdlib EXPORT_FILE_NAME include/cmdlib/${export_file_name
 IF (WIN32)
 ELSE()
 set(platform_sources
-    include/cmdlib/unix/command-impl.hpp
-    src/unix/command-impl.cpp)
+    include/cmdlib/unix/command_impl.hpp
+    src/unix/command_impl.cpp)
 ENDIF()
 
 
@@ -69,8 +69,8 @@ set(sources
     ${platform_sources}
     include/cmdlib/export.hpp
     include/cmdlib/command.hpp
-    include/cmdlib/command-impl.hpp
-    src/handle-stream.cpp
+    include/cmdlib/command_impl.hpp
+    src/handle_stream.cpp
     src/command.cpp)
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
 

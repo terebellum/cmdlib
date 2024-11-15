@@ -12,7 +12,7 @@
 #include <system_error>
 #include <unistd.h>
 
-#include <cmdlib/unix/command-impl.hpp>
+#include <cmdlib/unix/command_impl.hpp>
 
 namespace cmdlib {
 
