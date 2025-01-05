@@ -33,8 +33,8 @@ TEST(CommandTest, PropertiesCorrectlySet)
 
     std::vector<std::string> expected = {"cat", "test_data/HelloWorld.txt"};
     cmdlib::command cmd(expected);
-    EXPECT_EQ(cmd.get_arguments(), expected);
-    EXPECT_EQ(cmd.get_path(), expected[0]);
+    EXPECT_EQ(cmd.arguments(), expected);
+    EXPECT_EQ(cmd.path(), expected[0]);
     EXPECT_EQ(cmd.directory, "");
 }
 
@@ -75,7 +75,24 @@ TEST(CommandTest, Stdout)
     EXPECT_EQ(actual, expected);
 }
 
-TEST(CommandTest, ReturnCode) { }
+TEST(CommandTest, ReturnCode)
+{
+    std::vector<std::string> requiredCommands = {"python3"};
+    REQUIRE_COMMANDS(requiredCommands);
+
+    cmdlib::command cmd_success("python3", "-c", "import sys; sys.exit(0)");
+    cmd_success.run();
+
+    cmdlib::command cmd_error("python3", "-c", "import sys; sys.exit(1)");
+    cmd_error.run();
+
+    cmdlib::command cmd_random("python3", "-c", "import sys; sys.exit(42)");
+    cmd_random.run();
+
+    EXPECT_EQ(cmd_success.code(), 0);
+    EXPECT_EQ(cmd_error.code(), 1);
+    EXPECT_EQ(cmd_random.code(), 42);
+}
 
 TEST(CommandTest, Stderr)
 {
