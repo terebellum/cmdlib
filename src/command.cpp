@@ -1,5 +1,4 @@
 #include <cmdlib/command.hpp>
-#include <initializer_list>
 #include <istream>
 #include <sstream>
 #include <stdexcept>
@@ -16,8 +15,6 @@ command::command(const std::vector<std::string>& args)
     arguments_ = args;
 }
 
-command::command(std::initializer_list<std::string> args): command(std::vector<std::string>(args)) { }
-
 std::string command::get_path() const
 {
     return path_;
@@ -28,6 +25,11 @@ std::vector<std::string> command::get_arguments() const
     return arguments_;
 }
 
+int command::get_code() const
+{
+    return code_;
+}
+
 void command::start()
 {
     impl_.start(arguments_, directory);
@@ -35,7 +37,7 @@ void command::start()
 
 void command::wait()
 {
-    impl_.wait();
+    code_ = impl_.wait();
 }
 
 void command::run()
