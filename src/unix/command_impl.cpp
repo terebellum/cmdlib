@@ -1,6 +1,7 @@
 #include "cmdlib/handle_stream.hpp"
 #include <cerrno>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <fcntl.h>
 #include <iostream>
@@ -175,7 +176,7 @@ int command_impl::wait()
     if (waitpid(pid_, &status, 0) == -1) {
         throw std::system_error(errno, std::system_category(), "command_impl::wait() -> waitpid()");
     }
-    return status;
+    return WEXITSTATUS(status);
 }
 
 size_t command_impl::write_to(int descriptor, const void* buf, size_t count)
