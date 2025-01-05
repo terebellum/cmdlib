@@ -6,6 +6,17 @@
 
 #include <gtest/gtest.h>
 
+bool commandExists(const std::string& command)
+{
+#ifdef _WIN32
+    std::string cmd = "where " + command + " >NUL 2>NUL";
+#else
+    std::string cmd = "command -v " + command + " >/dev/null 2>&1";
+#endif
+    int result = std::system(cmd.c_str());
+    return result == 0;
+}
+
 TEST(CommandTest, Cat)
 {
     cmdlib::command cmd("cat", "test_data/HelloWorld.txt");
@@ -34,7 +45,10 @@ TEST(CommandTest, Stdin)
     std::ostream& in = cmd.in();
 
     std::thread t([&]() {
-        in << "banana\n" << "apple\n" << "peach\n" << '\n';
+        in << "banana\n"
+           << "apple\n"
+           << "peach\n"
+           << '\n';
         cmd.in_close();
     });
     t.detach();
@@ -56,9 +70,22 @@ TEST(CommandTest, Stdout)
     EXPECT_EQ(actual, expected);
 }
 
-TEST(CommandTest, Stderr)
+class PythonCommandTest: public ::testing::Test {
+protected:
+    static void SetUpTestSuite() { pythonAvailable = commandExists("python3"); }
+
+    static bool pythonAvailable;
+};
+
+bool PythonCommandTest::pythonAvailable = false;
+
+TEST_F(PythonCommandTest, Stderr)
 {
-    cmdlib::command cmd("python", "./test_data/echo_err.py");
+    if (!pythonAvailable) {
+        GTEST_SKIP() << "Python3 is not available. Skipping test.";
+    }
+
+    cmdlib::command cmd("python3", "./test_data/echo_err.py");
     std::istream& err = cmd.err();
     cmd.run();
 
