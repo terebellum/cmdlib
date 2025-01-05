@@ -6,20 +6,6 @@
 
 namespace cmdlib {
 
-std::vector<std::string> split(const std::string& str)
-{
-    std::vector<std::string> tokens;
-    std::istringstream iss(str);
-    std::string token;
-
-    while (iss >> token) {
-        tokens.push_back(token);
-    }
-    return tokens;
-}
-
-command::command(const std::string& cmd): command(split(cmd)){};
-
 command::command(const std::vector<std::string>& args)
 {
     if (args.size() == 0) {
@@ -30,17 +16,17 @@ command::command(const std::vector<std::string>& args)
     arguments_ = args;
 }
 
-std::string command::get_path() const
+std::string command::path() const
 {
     return path_;
 }
 
-std::vector<std::string> command::get_arguments() const
+std::vector<std::string> command::arguments() const
 {
     return arguments_;
 }
 
-int command::get_code() const
+int command::code() const
 {
     return code_;
 }
