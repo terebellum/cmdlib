@@ -4,27 +4,23 @@
 #include <thread>
 #include <vector>
 
+#include "command_utils.h"
 #include <gtest/gtest.h>
-
-bool commandExists(const std::string& command)
-{
-#ifdef _WIN32
-    std::string cmd = "where " + command + " >NUL 2>NUL";
-#else
-    std::string cmd = "command -v " + command + " >/dev/null 2>&1";
-#endif
-    int result = std::system(cmd.c_str());
-    return result == 0;
-}
 
 TEST(CommandTest, Cat)
 {
+    std::vector<std::string> requiredCommands = {"cat"};
+    REQUIRE_COMMANDS(requiredCommands);
+
     cmdlib::command cmd("cat", "test_data/HelloWorld.txt");
     EXPECT_EQ(cmd.output(), "Hello world!\n");
 }
 
 TEST(CommandTest, CatDifferentDirectory)
 {
+    std::vector<std::string> requiredCommands = {"cat"};
+    REQUIRE_COMMANDS(requiredCommands);
+
     cmdlib::command cmd("cat", "HelloWorld.txt");
     cmd.directory = "test_data";
     EXPECT_EQ(cmd.output(), "Hello world!\n");
@@ -32,6 +28,9 @@ TEST(CommandTest, CatDifferentDirectory)
 
 TEST(CommandTest, PropertiesCorrectlySet)
 {
+    std::vector<std::string> requiredCommands = {"cat"};
+    REQUIRE_COMMANDS(requiredCommands);
+
     std::vector<std::string> expected = {"cat", "test_data/HelloWorld.txt"};
     cmdlib::command cmd(expected);
     EXPECT_EQ(cmd.get_arguments(), expected);
@@ -41,6 +40,9 @@ TEST(CommandTest, PropertiesCorrectlySet)
 
 TEST(CommandTest, Stdin)
 {
+    std::vector<std::string> requiredCommands = {"sort"};
+    REQUIRE_COMMANDS(requiredCommands);
+
     cmdlib::command cmd("sort");
     std::ostream& in = cmd.in();
 
@@ -58,6 +60,9 @@ TEST(CommandTest, Stdin)
 
 TEST(CommandTest, Stdout)
 {
+    std::vector<std::string> requiredCommands = {"echo"};
+    REQUIRE_COMMANDS(requiredCommands);
+
     std::string expected = "hi";
 
     cmdlib::command cmd("echo", expected);
@@ -70,20 +75,12 @@ TEST(CommandTest, Stdout)
     EXPECT_EQ(actual, expected);
 }
 
-class PythonCommandTest: public ::testing::Test {
-protected:
-    static void SetUpTestSuite() { pythonAvailable = commandExists("python3"); }
+TEST(CommandTest, ReturnCode) { }
 
-    static bool pythonAvailable;
-};
-
-bool PythonCommandTest::pythonAvailable = false;
-
-TEST_F(PythonCommandTest, Stderr)
+TEST(CommandTest, Stderr)
 {
-    if (!pythonAvailable) {
-        GTEST_SKIP() << "Python3 is not available. Skipping test.";
-    }
+    std::vector<std::string> requiredCommands = {"python3"};
+    REQUIRE_COMMANDS(requiredCommands);
 
     cmdlib::command cmd("python3", "./test_data/echo_err.py");
     std::istream& err = cmd.err();
