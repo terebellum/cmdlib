@@ -21,6 +21,7 @@ CMDLIB_EXPORT class command {
 public:
     std::string directory;
 
+    command(const std::string& cmd);
     command(const std::vector<std::string>& arguments);
     command(const std::convertible_to<std::string> auto&... args): command(std::vector<std::string>{args...}) { }
     command(std::initializer_list<std::string> args): command(std::vector<std::string>(args)) { }

@@ -5,6 +5,21 @@
 #include <vector>
 
 namespace cmdlib {
+
+std::vector<std::string> split(const std::string& str)
+{
+    std::vector<std::string> tokens;
+    std::istringstream iss(str);
+    std::string token;
+
+    while (iss >> token) {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
+
+command::command(const std::string& cmd): command(split(cmd)){};
+
 command::command(const std::vector<std::string>& args)
 {
     if (args.size() == 0) {
